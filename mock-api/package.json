@@ -1,0 +1,14 @@
+{
+  "name": "dwellio-mock-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mock REST API for the Dwellio Flutter app (json-server).",
+  "scripts": {
+    "seed": "node generate.js",
+    "start": "node server.js",
+    "dev": "node generate.js && node server.js"
+  },
+  "dependencies": {
+    "json-server": "0.17.4"
+  }
+}
