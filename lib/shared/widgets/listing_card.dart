@@ -38,34 +38,37 @@ class ListingCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: 16 / 10,
-                  child: AppNetworkImage(url: listing.coverPhoto),
-                ),
-                Positioned(
-                  top: AppSpacing.sm,
-                  left: AppSpacing.sm,
-                  child: DealTypeBadge(dealType: listing.dealType),
-                ),
-                Positioned(
-                  top: AppSpacing.xs,
-                  right: AppSpacing.xs,
-                  child: FavoriteButton(
-                      listingId: listing.id, filledBackground: true),
-                ),
-                if (listing.featured)
+            // Image flexes to fill the cell so the card never overflows its
+            // grid extent / rail height regardless of width.
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  AppNetworkImage(url: listing.coverPhoto),
                   Positioned(
-                    bottom: AppSpacing.sm,
+                    top: AppSpacing.sm,
                     left: AppSpacing.sm,
-                    child: _FeaturedTag(),
+                    child: DealTypeBadge(dealType: listing.dealType),
                   ),
-              ],
+                  Positioned(
+                    top: AppSpacing.xs,
+                    right: AppSpacing.xs,
+                    child: FavoriteButton(
+                        listingId: listing.id, filledBackground: true),
+                  ),
+                  if (listing.featured)
+                    Positioned(
+                      bottom: AppSpacing.sm,
+                      left: AppSpacing.sm,
+                      child: _FeaturedTag(),
+                    ),
+                ],
+              ),
             ),
             Padding(
               padding: AppSpacing.cardAll,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   PriceTag(listing: listing),
