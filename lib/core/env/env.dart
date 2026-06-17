@@ -14,7 +14,7 @@ class Env {
   /// `localhost`. See the README for the per-platform value.
   static const String apiBaseUrl = String.fromEnvironment(
     'DWELLIO_API_BASE_URL',
-    defaultValue: 'http://localhost:3000',
+    defaultValue: 'http://192.168.6.124:3000',
   );
 
   /// When true, the network layer injects artificial latency and random

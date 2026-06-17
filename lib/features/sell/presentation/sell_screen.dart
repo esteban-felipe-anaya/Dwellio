@@ -8,15 +8,18 @@ import '../../../core/utils/formatters.dart';
 import '../../../shared/widgets/app_network_image.dart';
 import '../application/sell_controller.dart';
 
-/// Sample stock photos the user can attach (keeps the flow cross-platform
-/// without a native file picker).
-const _stockPhotos = [
-  'https://picsum.photos/seed/sell-a/800/600',
-  'https://picsum.photos/seed/sell-b/800/600',
-  'https://picsum.photos/seed/sell-c/800/600',
-  'https://picsum.photos/seed/sell-d/800/600',
-  'https://picsum.photos/seed/sell-e/800/600',
-  'https://picsum.photos/seed/sell-f/800/600',
+/// Sample real-estate stock photos the user can attach (keeps the flow
+/// cross-platform without a native file picker). Unsplash CDN, free to hotlink.
+String _stock(String id) =>
+    'https://images.unsplash.com/photo-$id?auto=format&fit=crop&w=800&q=60';
+
+final _stockPhotos = [
+  _stock('1568605114967-8130f3a36994'),
+  _stock('1600596542815-ffad4c1539a9'),
+  _stock('1600585154340-be6161a56a0c'),
+  _stock('1564013799919-ab600027ffc6'),
+  _stock('1502005229762-cf1b2da7c5d6'),
+  _stock('1583608205776-bfd35f0d9f83'),
 ];
 
 class SellScreen extends ConsumerStatefulWidget {

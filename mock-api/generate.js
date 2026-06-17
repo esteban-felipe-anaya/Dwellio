@@ -84,6 +84,35 @@ const adjectives = ['Sunlit', 'Modern', 'Cozy', 'Spacious', 'Charming', 'Elegant
 const features = ['City Views', 'Garden Patio', 'Open-Plan Kitchen', 'Rooftop Access',
   'Walk-in Closet', 'Hardwood Floors', 'Floor-to-Ceiling Windows', 'Private Balcony'];
 
+// Real property photos (Unsplash CDN, free to hotlink under the Unsplash
+// license). Each listing draws several from this pool. `?w=800` keeps them light.
+const PHOTO_IDS = [
+  '1568605114967-8130f3a36994', // modern house exterior
+  '1570129477492-45c003edd2be', // suburban house
+  '1512917774080-9991f1c4c750', // white two-storey house
+  '1600596542815-ffad4c1539a9', // modern villa
+  '1600585154340-be6161a56a0c', // bright living room
+  '1600607687939-ce8a6c25118c', // open-plan interior
+  '1600566753086-00f18fb6b3ea', // minimalist living room
+  '1600210492493-0946911123ea', // bedroom
+  '1600047509807-ba8f99d2cdde', // apartment interior
+  '1493809842364-78817add7ffb', // cozy living room
+  '1502005229762-cf1b2da7c5d6', // modern kitchen
+  '1484154218962-a197022b5858', // kitchen
+  '1560448204-e02f11c3d0e2',    // apartment building
+  '1564013799919-ab600027ffc6', // house with pool
+  '1583608205776-bfd35f0d9f83', // contemporary house
+  '1576941089067-2de3c901e126', // dining area
+  '1505691938895-1758d7feb511', // bright bedroom
+  '1556909114-f6e7ad7d3136',    // living room with sofa
+  '1502672260266-1c1ef2d93688', // styled interior
+  '1554995207-c18c203602cb',    // modern lounge
+];
+
+function photoUrl(id) {
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=60`;
+}
+
 const descriptions = [
   'Bright corner unit with floor-to-ceiling windows and an open layout perfect for entertaining.',
   'Freshly renovated home in a quiet, walkable neighborhood close to parks and cafés.',
@@ -110,10 +139,10 @@ function makeListing(i) {
   while (amenitySet.size < amenityCount) amenitySet.add(pick(amenityIds));
   if (parking > 0) amenitySet.add('parking');
 
-  const seed = `lst${1000 + i}`;
   const photoCount = between(3, 6);
+  const offset = (i * 3) % PHOTO_IDS.length;
   const photos = Array.from({ length: photoCount }).map(
-    (_, p) => `https://picsum.photos/seed/${seed}${p}/800/600`
+    (_, p) => photoUrl(PHOTO_IDS[(offset + p) % PHOTO_IDS.length])
   );
 
   // Scatter within ~0.06 deg (~6km) of the city center.
