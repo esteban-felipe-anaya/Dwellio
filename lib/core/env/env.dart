@@ -8,13 +8,13 @@
 class Env {
   const Env._();
 
-  /// Base URL of the mock REST API.
+  /// Base URL of the Dwellio backend (FastAPI). Port 8000.
   ///
   /// Note: Android emulators reach the host machine via `10.0.2.2`, not
-  /// `localhost`. See the README for the per-platform value.
+  /// `localhost`; physical devices use the host's LAN IP. See the README.
   static const String apiBaseUrl = String.fromEnvironment(
     'DWELLIO_API_BASE_URL',
-    defaultValue: 'http://192.168.6.124:3000',
+    defaultValue: 'http://192.168.6.124:8000',
   );
 
   /// When true, the network layer injects artificial latency and random

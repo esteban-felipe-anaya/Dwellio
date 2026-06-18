@@ -122,7 +122,7 @@ lib/
   shared/widgets/  # listing card, filter sheet, adaptive scaffold, loading/empty/error
   app.dart         # MaterialApp.router + theming + dynamic color
   main.dart        # bootstrap (SharedPreferences) + ProviderScope
-mock-api/          # json-server: db.json generator, custom server, npm scripts
+backend/           # FastAPI backend + Next.js/MUI admin (own repo / submodule)
 test/              # mortgage math, filter→query mapping, repository (mocked Dio)
 ```
 
@@ -130,21 +130,24 @@ test/              # mortgage math, filter→query mapping, repository (mocked D
 
 ## 🚀 Getting started
 
-### 1. Run the mock API (Node.js 18+)
+### 1. Run the backend API
+
+The app is served by the **FastAPI backend** in [`backend/`](backend/) (it replaces the
+original json-server mock — that data was migrated into the backend's seed). See
+[backend/README.md](backend/README.md) for full instructions:
 
 ```bash
-cd mock-api
-npm install
-npm run seed     # (re)generate db.json — 40 listings, 6 agents, etc. (already committed)
-npm start        # http://localhost:3000
+cd backend
+make setup && make migrate && make seed && make run   # API on http://localhost:8000
 ```
 
-The custom server (`server.js`) wraps `json-server` and adds token auth, listings
-filtering (`dealType, q, minPrice, maxPrice, beds, baths, type, minArea, amenities`),
-**map-bounds search** (`swLat, swLng, neLat, neLng`), `sort` / `_page` / `_limit`,
-`/listings/:id/similar`, `POST /listings`, favorites, tours, inquiries and notifications.
+It exposes the exact same paths, query params and JSON shapes the app expects, including
+**map-bounds search** (`swLat,swLng,neLat,neLng`), all filters, `/listings/:id/similar`,
+favorites, tours, inquiries, notifications, plus server-side mortgage/derived values and a
+staff-only `/admin-api` powering the Next.js admin dashboard.
 
-**Demo account** (seeded, and pre-filled on the login screen): `demo@dwellio.app` / `password`
+**Demo account** (seeded, pre-filled on the login screen): `demo@dwellio.app` / `password`
+(staff/admin: `admin@dwellio.app` / `password`).
 
 > The `ChaosInterceptor` injects **300–800 ms latency and occasional failures** by default
 > so loading/error states are exercised. Disable with
@@ -161,18 +164,18 @@ flutter run -d chrome     # or: windows · macos · linux · a device
 
 ### 3. Point the app at your API
 
-The base URL defaults to `http://localhost:3000`. Override per-run, no code change:
+The backend runs on port **8000**. Override the base URL per-run, no code change:
 
 ```bash
-flutter run --dart-define=DWELLIO_API_BASE_URL=http://localhost:3000
+flutter run --dart-define=DWELLIO_API_BASE_URL=http://localhost:8000
 ```
 
 | Target            | `DWELLIO_API_BASE_URL` |
 |-------------------|------------------------|
-| Web / desktop     | `http://localhost:3000` |
-| Android emulator  | `http://10.0.2.2:3000` |
-| iOS simulator     | `http://localhost:3000` |
-| Physical device   | `http://<your-machine-LAN-ip>:3000` |
+| Web / desktop     | `http://localhost:8000` |
+| Android emulator  | `http://10.0.2.2:8000` |
+| iOS simulator     | `http://localhost:8000` |
+| Physical device   | `http://<your-machine-LAN-ip>:8000` |
 
 ---
 
