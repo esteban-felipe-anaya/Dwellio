@@ -164,10 +164,13 @@ flutter run -d chrome     # or: windows · macos · linux · a device
 
 ### 3. Point the app at your API
 
-The backend runs on port **8000**. Override the base URL per-run, no code change:
+The backend runs on port **8000**. Configuration is read at startup from a
+[`.env`](.env) file (via `flutter_dotenv`) — **edit it and restart, no recompile**:
 
-```bash
-flutter run --dart-define=DWELLIO_API_BASE_URL=http://localhost:8000
+```dotenv
+# .env  (copy from .env.example)
+DWELLIO_API_BASE_URL=http://localhost:8000
+DWELLIO_SIMULATE_NETWORK=true
 ```
 
 | Target            | `DWELLIO_API_BASE_URL` |
@@ -176,6 +179,13 @@ flutter run --dart-define=DWELLIO_API_BASE_URL=http://localhost:8000
 | Android emulator  | `http://10.0.2.2:8000` |
 | iOS simulator     | `http://localhost:8000` |
 | Physical device   | `http://<your-machine-LAN-ip>:8000` |
+
+Resolution order is **`--dart-define` → `.env` → built-in default**, so CI can still
+override at build time without a `.env`:
+
+```bash
+flutter run --dart-define=DWELLIO_API_BASE_URL=http://10.0.2.2:8000
+```
 
 ---
 
